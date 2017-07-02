@@ -1,0 +1,121 @@
+\documentclass{beamer}
+\usepackage{./theme/beamerthemeAerothai}
+\usepackage{amsmath, amssymb, bm, upgreek, tikz, pgfplots, mathtools, xwatermark, colortbl, booktabs}
+\usepackage[labelformat=empty]{caption}
+\usepackage{multirow}
+\usetikzlibrary{positioning,trees,shapes,calc,shadows,arrows}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+
+\title[MTTS]{Multi Target Tracking System}
+\subtitle{}
+\author[P. Juntama]{
+	Paveen JUNTAMA\\
+	\href{mailto:paveenju@aerothai.co.th}{paveenju@aerothai.co.th}
+}
+\institute[RD.AS.]{
+	Air Traffic Engineering Research \& Development Department\\
+	\vspace{0.4cm}
+	\pgfuseimage{artbig}
+}
+%\date{ \today }
+\date { May 19, 2017 }
+
+\begin{document}
+	\maketitle
+	\begin{frame}{Outline}
+		\framesubtitle\insertsubsection
+		\vspace{-2em}
+		\tableofcontents[hideallsubsections]
+	\end{frame}
+	
+	% Section 01 : Introduction
+	\section{Introduction}
+	\begin{frame}
+		\frametitle\insertsection
+		\framesubtitle\insertsubsection
+		\tableofcontents[
+			currentsection,
+			sectionstyle=hide/hide,
+			subsectionstyle=show/show/hide
+		]
+	\end{frame}
+	\include{./tex/section01}
+	
+%	% Section 02 : Tracking System
+%	\section{Tracking System}
+%	\begin{frame}
+%		\frametitle\insertsection
+%		\framesubtitle\insertsubsection
+%		\tableofcontents[
+%			currentsection,
+%			sectionstyle=hide/hide,
+%			subsectionstyle=show/show/hide
+%		]
+%	\end{frame}
+%	\include{./tex/section02}
+	
+	% Section 03 : 
+	\section{Data Correlation}
+	\begin{frame}
+		\frametitle\insertsection
+		\framesubtitle\insertsubsection
+		\tableofcontents[
+			currentsection,
+			sectionstyle=hide/hide,
+			subsectionstyle=show/show/hide
+		]
+	\end{frame}
+	\include{./tex/section03}
+	
+	% Section 04 : 
+	\section{Data Association}
+	\begin{frame}
+		\frametitle\insertsection
+		\framesubtitle\insertsubsection
+		\tableofcontents[
+			currentsection,
+			sectionstyle=hide/hide,
+			subsectionstyle=show/show/hide
+		]
+	\end{frame}
+	\include{./tex/section04}
+	
+	% Section 05 : 
+	\section{Track Management}
+	\begin{frame}
+		\frametitle\insertsection
+		\framesubtitle\insertsubsection
+		\tableofcontents[
+			currentsection,
+			sectionstyle=hide/hide,
+			subsectionstyle=show/show/hide
+		]
+	\end{frame}
+	\include{./tex/section05}
+	
+	% Section 06 : 
+	\section{State Estimation}
+	\begin{frame}
+		\frametitle\insertsection
+		\framesubtitle\insertsubsection
+		\tableofcontents[
+			currentsection,
+			sectionstyle=hide/hide,
+			subsectionstyle=show/show/hide
+		]
+	\end{frame}
+	\include{./tex/section06}
+
+	\usebackgroundtemplate{%
+		\tikz[overlay,remember picture] \node[opacity=0.125, at=(current page.center)] {\includegraphics[scale=0.5]{./img/aerothai}};
+	}
+	\begin{frame}
+		\begin{center}
+			\Huge \textbf{Thank You}
+		\end{center}
+	\end{frame}
+\end{document}
