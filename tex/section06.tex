@@ -1,0 +1,573 @@
+\subsection{Why Filtering ?}
+	\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{itemize}
+		\item {Reduce errors in measured position through weighted averaging.}
+		\item {Estimate target velocity and sometimes target acceleration.}
+		\item {Better prediction of future target position for specific purposes.}
+	\end{itemize}
+\end{frame}
+\subsection{Models \& Problems}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-1.5em}
+	\begin{block}{State Equation}
+		\begin{itemize}
+			\item {A mathematical model of how the state $\mathbf{X}_{k}$ varies in time; so-called Process Model or Motion Model:}
+			\begin{align*}
+				\mathbf{X}_k= \mathbf{F}(\mathbf{X}_{k-1})+u_k
+			\end{align*}
+			\item {$\mathbf{X}_k$: the track state vector}
+			\item {$\mathbf{F}$: the state transition matrix or equation of motion}
+			\item {$u_k$: the white gaussian dynamic or process noise independent from the initial state $\mathbf{X}_0$ so that:}
+			\begin{align*}
+				E[u_{k}u^\intercal_{j}] = \mathbf{Q}_k\delta_{kj} = 
+				\begin{cases}
+					0 & \text{if $k \neq j$} \\
+					v^u_k & \text{otherwise}
+				\end{cases}
+			\end{align*}
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-1.5em}
+	\begin{block}{Observation Equation}
+		\begin{itemize}
+			\item {The equation are related to the unknown state vector to predicted observations or measurements:}
+			\begin{align*}
+				\mathbf{Z}_k= \mathbf{H}(\mathbf{X}_k)+w_k
+			\end{align*}
+			\item {$\mathbf{X}_k$: the measurement vector}
+			\item {$\mathbf{H}$: the observation matrix}
+			\item {$w_k$: the white gaussian measurement noise independent from the initial state $x_0$ so that:}
+			\begin{align*}
+				E[w_{k}w^\intercal_{j}] = \mathbf{R}_k\delta_{kj} = 
+				\begin{cases}
+					0 & \text{if $k \neq j$} \\
+					v^w_k & \text{otherwise}
+				\end{cases}
+			\end{align*}
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\begin{block}{Problems}
+		The estimation problem of state $\mathbf{X}_k$ of the system from measurements $z_k$ can be divided in 3 distinct problems according to measurement interval:\\
+		\begin{itemize}
+			\item {\textbf{Correction:} Estimation of $\mathbf{X}_k$ from ${[\mathbf{Z}_1,...,\mathbf{Z}_N]}$ with $k=N$}
+			\item {\textbf{Prediction:} Estimation of $\mathbf{X}_k$ from ${[\mathbf{Z}_1,...,\mathbf{Z}_N]}$ with $k>N$}
+			\item {\textbf{Smoothing:} Estimation of $\mathbf{X}_k$ from ${[\mathbf{Z}_1,...,\mathbf{Z}_N]}$ with $k<N$}
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\begin{block}{Measurement Model : Examples}
+		\begin{itemize}
+			\item {Simple cartesian}
+			\begin{align*}
+				\mathbf{Z}_{k} =[x_{k} \ y_{k} ]^\intercal + e_{k}
+			\end{align*}
+			\item {Range}
+			\begin{align*}
+				\mathbf{Z}_{k} =\sqrt{x^2_k + y^2_k} + e_k
+			\end{align*}
+			\item {Bearing only}
+			\begin{align*}
+				\mathbf{Z}_{k} = \textup{atan2}(y_k,x_k)+ e_k
+			\end{align*}
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\begin{block}{Motion Models} \footnotesize
+		\textbf{Constant Velocity (CV) Model :}
+		\begin{align*}
+			\mathbf{X}_k\triangleq
+			\begin{bmatrix}
+				x_k\\\dot{x}_k
+			\end{bmatrix} =
+			\begin{bmatrix}
+				1&T\\0&1
+			\end{bmatrix}  
+			\begin{bmatrix}
+				x_{k-1}\\\dot{x}_{k-1}
+			\end{bmatrix} + 
+			\begin{bmatrix}
+				{T^{2}}/2\\T
+			\end{bmatrix} a_k
+		\end{align*}
+		where $a_{k} \sim N(0, \sigma^{2}_{a})$ is a white noise.\\
+		\vspace{1em}
+		\textbf{Constant Acceleration (CA) Model :}
+		\begin{align*}
+			\mathbf{X}_k\triangleq
+			\begin{bmatrix}
+				x_k\\\dot{x}_k\\\ddot{x}_k
+			\end{bmatrix} = 
+			\begin{bmatrix}
+				1&T&{T^2}/2 \\ 0&1&T \\ 0&0&1
+			\end{bmatrix}
+			\begin{bmatrix}
+				x_{k-1}\\\dot{x}_{k-1}\\\ddot{x}_{k-1}
+			\end{bmatrix} + 
+			\begin{bmatrix}
+				{T^{2}}/{2} \\ T \\ 1
+			\end{bmatrix}  \eta_{k}
+		\end{align*}
+		where $\eta _{k} \sim N(0, \sigma ^{2}_{ \eta })$ is a white noise.
+	\end{block}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-1em}
+	\begin{block}{Motion Models (cont'd)}
+		\footnotesize
+		\textbf{Coordinated Turn (CT) Model :}
+		\begin{align*}
+			\mathbf{X}_{k} &\triangleq
+			\begin{bmatrix}
+				x_k & y_k & \dot{x}_k & \dot{y}_k & \omega_k
+			\end{bmatrix}^\intercal \\
+			\mathbf{X}_k &=
+			\begin{bmatrix}
+				1 & 0 &\cfrac{\sin(\omega_{k-1}T)}{\omega_{k-1}} & -\cfrac{1-\cos(\omega_{k-1}T) }{\omega_{k-1})} & 0 \\
+				0 & 1 & \cfrac{1- \cos(\omega _{k-1}T) }{\omega_{k-1}} & \cfrac{\sin(\omega_{k-1}T) }{\omega_{k-1}} & 0 \\
+				0 & 0 & \cos(\omega_{k-1}T) & -\sin(\omega_{k-1}T) & 0 \\
+				0 & 0 & \sin(\omega_{k-1}T) & \cos(\omega_{k-1}T) & 0 \\
+				0 & 0 & 0 & 0 & 1
+			\end{bmatrix} \mathbf{X}_{k-1}
+			+
+			\begin{bmatrix}
+				{T^{2}}/2 & 0 & 0 \\
+				0 & {T^{2}}/2 & 0 \\
+				T & 0 & 0 \\
+				0 & T & 0 \\
+				0 & 0 & 1
+			\end{bmatrix} \eta _{k}
+		\end{align*}
+	\end{block}
+\end{frame}
+\subsection{Kalman Filtering}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\begin{block} {Kalman Filter}
+		\begin{itemize}
+			\item {Introduced by Kalman (1960), has been one of most widely used estimation algorithms.}
+			\item {A recursive and statistically estimator}
+			\item {The optimal minimum mean square error (MMSE) estimation for linear, gaussian systems.}
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\begin{block}{Track State Prediction}
+		\begin{itemize}
+			\item {Using the state vector and state transition matrix, the equation for predicting the state can be written as:}
+			\begin{align*}
+				\hat{\mathbf{X}}_{k|k-1}= \mathbf{F}_{k|k-1} \hat{\mathbf{X}}_{k-1|k-1}
+			\end{align*}
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-1em}
+	\begin{block}{Track Covariance Matrix}
+		\begin{itemize}
+			\item {A matrix $\mathbf{P}_k$ containing all of the variance quantities related to all elements of the state.}
+			\item {The diagonal elements are the variances of the members of the state vector.}
+			\item {The off-diagonal elements are the covariance between any two state vector members.}
+			\begin{align*}
+				\mathbf{P}_k =
+				\begin{bmatrix}
+					{\sigma_x}^2 & \sigma_{xy} & \sigma_{xz} \\
+					\sigma_{yx} & {\sigma_y}^2 & \sigma_{yz} \\
+					\sigma_{zx} & \sigma_{zy} & {\sigma_z}^2 \\
+				\end{bmatrix}
+			\end{align*}
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\begin{block}{Process Noise}
+		\begin{itemize}
+			\item {Process noise $\mathbf{Q}_k$ is how a target deviate its position from assumed motion model.}
+			\item {Example of CV white noise model:}
+			\begin{align*}
+				\mathbf{Q}_k = \sigma^2_a
+				\begin{bmatrix}
+					\dfrac{\Delta t^4}{4} & \dfrac{\Delta t^3}{2} \\
+					\dfrac{\Delta t^3}{2} & \Delta t^2 \\
+				\end{bmatrix}
+			\end{align*}
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\begin{block}{Track Covariance Prediction}
+		\begin{itemize}
+			\item {The covariance matrix is predicted using state transition matrix.}
+			\item {Process noise is included in the prediction of the covariance matrix.}
+			\item {Process noise is included in the prediction of the covariance matrix.}
+			\begin{align*}
+				\mathbf{P}_{k|k-1}= \mathbf{F}_{k|k-1} \mathbf{P}_{k-1|k-1} \mathbf{F}^\intercal_{k|k-1} + \mathbf{Q}_{k|k-1}
+			\end{align*}
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-1em}
+	\begin{block}{Measurement Vector}
+		\begin{itemize}
+			\item {The vector $\mathbf{Z}_k$ is a column vector containing the new measurement from an example:}
+			\begin{align*}
+				\mathbf{Z}_k =
+				\begin{bmatrix}
+					x_k & y_k & z_k
+				\end{bmatrix}^\intercal
+			\end{align*}
+		\end{itemize}
+	\end{block}
+	\begin{block}{Measurement Covariance Matrix}
+		\begin{itemize}
+			\item {The matrix $\mathbf{R}_k$ contains the variances of measured quantities and covariances if required.}
+			\begin{align*}
+				\mathbf{R}_k =
+				\begin{bmatrix}
+					\sigma^2_x & 0 & 0 \\
+					0 & \sigma^2_y & 0 \\
+					0 & 0 & \sigma^2_z
+				\end{bmatrix}
+			\end{align*}
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-1em}
+	\begin{block}{Observation Matrix}
+		\begin{itemize}
+			\item {The state vector and the covariance matrix include all of the state quantities.}
+			\item {The observation matrix $\mathbf{H}$ enables the parts of these related to the measures quantities to be extracted from all elements.}
+		\end{itemize}
+	\end{block}
+	\begin{block}{Predicted Measurement Vector}
+		\begin{itemize}
+			\item {With the observation matrix $\mathbf{H}$ and the predicted state vector $\mathbf{X}_{k|k-1}$, predicted measurement vector $\mathbf{Z}_k$ can be determined:}
+			\begin{align*}
+				\hat{\mathbf{Z}}_{k|k-1} = \mathbf{H} \hat{\mathbf{X}}_{k|k-1}
+			\end{align*}
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-1em}
+	\begin{block}{Residual (Innovation) Vector}
+		\begin{itemize}
+			\item {The residual $\mathbf{\nu}_k$ is the difference between the measurement and the predicted measurement:}
+			\begin{align*}
+				\mathbf{\nu}_k = \mathbf{Z}_k - \hat{\mathbf{Z}}_{k|k-1} = \mathbf{Z}_k - \mathbf{H} \hat{\mathbf{X}}_{k|k-1}
+			\end{align*}
+		\end{itemize}
+	\end{block}
+	\begin{block}{Residual (Innovation) Covariance Matrix}
+		\begin{itemize}
+			\item {The covariance matrix $\mathbf{S}_k$ is expressed in terms of the predicted track covariance matrix related to the measured quantities with the measurement covariance matrix:}
+			\begin{align*}
+				\mathbf{S}_k = \mathbf{HP}_{k|k-1}\mathbf{H}^\intercal - \mathbf{R}_k
+			\end{align*}
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-1em}
+	\begin{block}{Gain Matrix}
+		\begin{itemize}
+			\item {The gain matrix $\mathbf{K}_k$ determines the relative weight given to the predicted and the new measurement to update the state.}
+			\begin{align*}
+				\mathbf{K}_k = \mathbf{P}_{k|k-1} \mathbf{H}^\intercal \mathbf{S}^{-1}_k
+			\end{align*}
+		\end{itemize}
+	\end{block}
+	\begin{block}{Track State Vector Update}
+		\begin{itemize}
+			\item {The predicted state can then be updated to obtain a new track estimated.}
+			\begin{align*}
+				\hat{\mathbf{X}}_{k|k} = \hat{\mathbf{X}}_{k|k-1} + \mathbf{K}_k \mathbf{\nu}_k
+			\end{align*}
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-1em}
+	\begin{block}{Track Covariance Matrix Update}
+		\begin{itemize}
+			\item {The predicted covariance is also updated to updated to obtain the covariance of the new state estimate.}
+			\begin{align*}
+				\mathbf{P}_{k|k} = (\mathbf{I} - \mathbf{K}_k \mathbf{H}) \mathbf{P}_{k|k-1} (\mathbf{I} - \mathbf{K}_k \mathbf{H})^\intercal + \mathbf{K}_k\mathbf{R}_k\mathbf{K}^\intercal_k
+			\end{align*}
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{figure}
+		\caption{\textbf{Kalman Filtering Process}}
+		\scalebox{0.667}{\input{./tex/fig6-7}}
+	\end{figure}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\textbf{Step 1 : Prediction}
+	\begin{figure}
+		\scalebox{1}{\input{./tex/fig6-2}}
+	\end{figure}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-1em}
+	\textbf{Step 2 : Residual Computation}
+	\begin{figure}
+		\scalebox{1}{\input{./tex/fig6-3}}
+	\end{figure}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\textbf{Step 3+4 : Gain Computation \& Filter Update}
+	\begin{figure}
+		\scalebox{1}{\input{./tex/fig6-4}}
+	\end{figure}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{figure}
+		\caption{\textbf{Evolution of area uncertainties}}
+		\scalebox{0.75}{\input{./tex/fig6-6}}
+	\end{figure}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{exampleblock} {Kalman Filter : Pros}
+		\begin{itemize}
+			\item {On the same filter, Kalman filter can be used for widely varying environments by changing a few parameters. }
+			\item {Kalman filter automatically handles:}
+				\begin{itemize}
+					\item {Missed detections}
+					\item {Non-uniform sampling intervals}
+				\end{itemize}
+			\item {The filter provides a mesure of the estimated target state accuracy through the covariance matrix.}
+			\item {Kalman filter can handle deviations from the assumed motion model.}
+		\end{itemize}
+	\end{exampleblock}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{alertblock} {Kalman Filter : Cons}
+		\begin{itemize}
+			\item {Computationally intensive compared to fixed-gain filters.}
+			\item {Both linear motion models and linear measurement models are required.}
+			\item {The statistics for the measurement noise to be accurately known and zero-mean Gaussian are required.}
+		\end{itemize}
+	\end{alertblock}
+\end{frame}
+
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{block} {When to do Non-Linear Filtering}
+		\begin{itemize}
+			\item {In reality, the entire system is always non-linear.}
+			\item {Either non-linear equations of motion or non-linear relation between tracked and measured state variables can be existed.}
+			\item {Linear approximation is not sufficient to be an accurate solution.}
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{block} {Types of Non-linear filters}
+		\begin{itemize}
+			\item {Extended Kalman Filter (EKF)}
+				\begin{itemize}
+					\item {$1^{st}$ Order Approximation}
+					\item {$2^{st}$ Order Approximation}
+					\item {Iterated EKF (IEKF)}
+				\end{itemize}
+			\item {Unscented Kalman Filter}
+			\item {Particle Filter}
+		\end{itemize}
+	\end{block}
+\end{frame}
+\subsection{Adaptive Filtering}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{block} {Target Maneuvering Problem}
+		\begin{itemize}
+			\item {\textbf{Maneuver:} target motion that deviates from the assumed motion model.}
+			\item {Random perturbations and small intentional maneuvers can be handled by the addition of process noise.}
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{figure}
+		\caption{\textbf{Maneuvering Problem}}
+		\includegraphics[scale=0.3333]{./img/maneuver}
+	\end{figure}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{block} {Approaches to maneuvering problems}
+		\begin{itemize}
+			\item {Maneuver Detection}
+			\item {Multiple Models}
+			\begin{itemize}
+				\item {Non-switching mutiple models}
+				\item {Switching mutiple models}
+				\begin{itemize}
+					\item {Generalized Pseudo Bayesian (GPB) methods}
+					\item {Interacting Multiple Model (IMM) algorithm}
+				\end{itemize}
+			\end{itemize}
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{block} {Multiple Model Approaches}
+		\begin{itemize}
+			\item {Multiple parallel filters}
+			\item {Each filter is based on one of following:}
+			\begin{itemize}
+				\item {Different Motion model.}
+				\item {Different Process noise.}
+			\end{itemize}
+			\item {Overall estimate is a weighted combination of the estimates from the multiple filters.}
+			\item {No explicit maneuver detection.}
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{block} {Probability Model}
+		\begin{itemize}
+			\item {For each model, compute the probability to determine which model is correct. }
+			\item {The probability that model $j$ is correct is}
+			\begin{align*}
+				P\{M_j | Z^k\} = \frac{\Lambda_j(k) \mu_j}{\sum\limits_{l=1}^r \Lambda_l(k)\mu_l}
+			\end{align*}
+			\vspace{-2em}
+			\begin{align*}
+				\text{with\ }	\Lambda_j(k) = \frac{1}{\sqrt{2\pi|\mathbf{S}_j(k)|}}\exp[-\frac{1}{2}\mathbf{v}^\intercal_j(k)\mathbf{S}_j(k)\mathbf{v}_j(k)]
+			\end{align*}
+			$\mu_j$ : prior probability (the probability that model $j$ was correct after update).
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{block}{Interacting Multiple Model (IMM) Filter}
+	\end{block}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-1em}
+	\begin{figure}
+		\caption{\textbf{IMM Filter : Functional Diagram}}
+		\scalebox{1}{\input{./tex/fig6-8}}
+	\end{figure}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{figure}
+		\caption{\textbf{IMM Filter : Algorithms}}
+		\scalebox{0.75}{\input{./tex/fig6-9}}
+	\end{figure}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{figure}
+		\caption{\textbf{Example : IMM Filter with CV, CA and CT Models}}
+		\scalebox{0.8}{\input{./tex/fig6-10}}
+	\end{figure}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{block}{IMM Dessign}
+		\begin{itemize}
+			\item {Model Set Design -- Most important}
+			\begin{itemize}
+				\item {Most designs are ad hoc.}
+				\item {Need enough models.}
+				\item {Models must be different enough so that their performance differences are "identifiable" or "observable".}
+			\end{itemize}
+			\item {Design of Transition Probability Matrix (TPM)}
+			\begin{itemize}
+				\item {Done a priori.}
+				\item {Algorithms for online adaption are a current research area.}
+			\end{itemize}
+		\end{itemize}
+	\end{block}
+\end{frame}

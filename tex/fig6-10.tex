@@ -1,0 +1,45 @@
+\begin{tikzpicture}[xscale=1,yscale=1,
+	square/.style={rectangle, minimum height=10mm, draw=black, align=center},
+	point/.style={circle, thick, draw=blue, inner sep=0pt, minimum size=1.5mm},
+	label/.style={text width=5mm, font=\footnotesize},
+	node distance= 1.25cm and 1cm, >=stealth]
+	
+	%Nodes
+	\node[square, minimum width=20mm, minimum height=30mm]	(mixing)	at (0,0)	{Mixing};
+	\node[square, xshift=4cm, yshift=2.5mm]	(ca)	[right of=mixing]	{Filter CA};
+	\node[square]	(cv)	[above of=ca]		{Filter CV};
+	\node[square]	(ct)	[below of=ca]		{Filter CT};
+	\node[square, minimum width=30mm, xshift=2.5cm, yshift=-5mm]	(combine)	[below of=ct]		{Combination};
+	\node[point]	(sw0)	at (2,1.625)	{};
+	\node[point]	(sw1)	at (2,1.875)	{};
+	\node[point]	(sw2)	at (2.5,1.75)	{};
+	\node[label, blue, text width=20mm]	(dap)	at (3,2.25)	{DAPs enabled};
+	
+	%Lines
+	\draw[black, <-] (mixing.west) -- node[label, below, text width=30mm] {$\hat{\mathbf{X}}^2_{k-1|k-1}\ \mathbf{P}^2_{k-1|k-1}$} ++(-2,0);
+	\draw[black, <-] (mixing.135) -- node[label, below, text width=30mm] {$\hat{\mathbf{X}}^1_{k-1|k-1}\ \mathbf{P}^1_{k-1|k-1}$} ++(-2,0);
+	\draw[black, <-] (mixing.225) -- node[label, below, text width=30mm] {$\hat{\mathbf{X}}^3_{k-1|k-1}\ \mathbf{P}^3_{k-1|k-1}$} ++(-2,0);
+	\draw[black, <-] (mixing.south) -- ++(0,-0.5) -- node[label, below, text width=30mm] {$\mu^{i|j}_{k-1|k-1}$} ++(-3,0);
+	
+	\draw[black, ->] (mixing.east) -- node[label, below, text width=30mm] {$\hat{\mathbf{X}}^{02}_{k-1|k-1}\ \mathbf{P}^{02}_{k-1|k-1}$} ++(3.38,0);
+	\draw[black, ->] (mixing.50) -- node[label, below, text width=30mm] {$\hat{\mathbf{X}}^{01}_{k-1|k-1}\ \mathbf{P}^{01}_{k-1|k-1}$} ++(3.38,0);
+	\draw[black, ->] (mixing.310) -- node[label, below, text width=30mm] {$\hat{\mathbf{X}}^{03}_{k-1|k-1}\ \mathbf{P}^{03}_{k-1|k-1}$} ++(3.38,0);
+	
+	\draw[black, ->] (cv.east) -- ++(5,0) node[label, below, text width=30mm] {$\hat{\mathbf{X}}^1_{k|k}\ \mathbf{P}^1_{k|k}$};
+	\draw[black, ->] (ca.east) -- ++(5,0) node[label, below, text width=30mm] {$\hat{\mathbf{X}}^2_{k|k}\ \mathbf{P}^2_{k|k}$};;
+	\draw[black, ->] (ct.east) -- ++(5,0) node[label, below, text width=30mm] {$\hat{\mathbf{X}}^3_{k|k}\ \mathbf{P}^3_{k|k}$};;
+	
+	\draw[black, ->] (combine.east) -- ++(1.85,0) node[label, below, text width=30mm] {$\hat{\mathbf{X}}_{k|k}\ \mathbf{P}_{k|k}$\\$\mu^j_k \ \mu^{i|j}_{k|k}$};
+	\draw[black, <-] (combine.150) -- ++(0,3.75) node[label, below, text width=30mm, xshift=0.9cm] {$\hat{\mathbf{X}}^1_{k|k}\ \Lambda^1_k$\\$\mathbf{P}^1_{k|k}$};
+	\draw[black, <-] (combine.north) -- node[label, above, text width=30mm, xshift=0.9cm] {$\hat{\mathbf{X}}^2_{k|k}\ \Lambda^2_k$\\$\mathbf{P}^2_{k|k}$} ++(0,2.5);
+	\draw[black, <-] (combine.30) -- node[label, above, text width=30mm, xshift=0.9cm, yshift=-5mm] {$\hat{\mathbf{X}}^3_{k|k}\ \Lambda^3_k$\\$\mathbf{P}^3_{k|k}$} ++(0,1.25);
+	\draw[black, <-] (combine.west) -- ++(-9.25,0) node[label, below, text width=30mm, xshift=1.5cm] {$\mu^j_{k-1} (i,j = 1,2,3)$};
+	
+	\draw[blue, thick, ->] (sw2) -- ++(1.875,0);
+	\draw[blue, thick, <-] (ca.160) -- ++(-0.5,0) -- ++(0,1.19);
+	\draw[blue, thick, <-] (ct.160) -- ++(-0.5,0) -- ++(0,1.25);
+	
+	\draw[blue, thick, -] (sw1) -- (sw2);
+	\draw[blue, thick, <-] (sw0) -- ++(-3,0) node[label, text width=30mm, xshift=-7mm] {$\mathbf{Z}_k=[x_k\ y_k\ z_k]^\intercal$};
+	\draw[blue, thick, <-] (sw1) -- ++(-1,0) node[label, above, text width=50mm, xshift=-5mm] {$\mathbf{Z}_k=[x_k\ y_k\ z_k\ \dot{x}_k\ \dot{y}_k\ \dot{z}_k]^\intercal$};
+\end{tikzpicture}

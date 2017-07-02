@@ -1,0 +1,32 @@
+\begin{tikzpicture}[xscale=1,yscale=1,
+	round/.style={circle, inner sep=0pt, fill=red!50, opacity=0.75, align=center},
+	point/.style={circle, inner sep=0pt, minimum size=2mm, align=center},
+	oval/.style={ellipse, fill=gray!50, opacity=0.75},
+	label/.style={text width=15mm, align=center},
+	node distance= 3cm and 1cm, >=stealth]
+		
+	%Nodes
+	\node[oval, minimum height=1.5cm, minimum width=2cm, rotate=60]	(area0)	at	(0,0)	{};
+	\node[point, minimum size=1.5mm, fill=black]	(p0)	at	(0,0)	{};
+	
+	\node[oval, minimum height=2cm, minimum width=2.5cm, rotate=60]	(area1)	at	(2,2)	{};
+	\node[point, minimum size=1.5mm, fill=black]	(p1)	at	(2,2)	{};
+	
+	\node[label]	(l1)	at	(1,-2)	{$\hat{\mathbf{X}}_{k-1|k-1}$};
+	\node[label]	(l2)	at	(4,0)	{$\hat{\mathbf{X}}_{k|k-1}$};
+	\node[label, font=\scriptsize, text width=20mm]	(l3)	at	(5,3.1)	{True Trajectory};
+	
+	%Lines
+	\draw[black, dashed, -] (p0) -- (p1);
+	\draw[black, thick,->] (p0) -- ++(0.5,0.5);
+	\draw[black, thick, -] (p0) -- ++(0.75,0.25);
+	\draw[black, thick, -] (p0) -- ++(0.25,0.75);
+	\draw[black, thick, ->] (p1) -- ++(0.5,0.5);
+	\draw[black, thick, -] (p1) -- ++(0.75,0.25);
+	\draw[black, thick, -] (p1) -- ++(0.25,0.75);
+	
+	\draw[black, ->] (l1) -- (0.1,-0.1);
+	\draw[black, ->] (l2) -- (2.1, 1.9);
+	
+	\draw[blue!50, thick, ->] (-2,-1) -- (4, 3);
+\end{tikzpicture}

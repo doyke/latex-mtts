@@ -1,0 +1,22 @@
+\begin{tikzpicture}[xscale=1,yscale=1,
+	round/.style={circle, inner sep=0pt, fill=red!50, opacity=0.75, align=center},
+	point/.style={circle, inner sep=0pt, minimum size=2mm, align=center},
+	oval/.style={ellipse, draw=black, thick},
+	label/.style={text width=15mm, align=center},
+	node distance= 3cm and 1cm, >=stealth]
+		
+	%Nodes
+	\node[oval, minimum height=1cm, minimum width=3cm]	(init)	at	(0,3)	{Initiated};
+	\node[oval, minimum height=1cm, minimum width=3cm]	(del)	at	(4,0)	{Deleted};
+	\node[oval, minimum height=1cm, minimum width=3cm]	(ten)	at	(-4,0)	{Tentative};
+	\node[oval, minimum height=1cm, minimum width=3cm]	(con)	at	(0,-3)	{Confirmed};
+	
+	%Lines
+	\path[black, thick, ->]	(init.0)	edge	[bend left=45]	node [midway, xshift=1.5cm] {false detection} (del.north);
+	\path[black, thick, ->]	(del.south)	edge	[bend left=45]	node [midway, xshift=1.8cm] {consecutive misses} (con.east);
+	\path[black, thick, ->]	(con.west)	edge	[bend left=45]	node [midway, xshift=-2cm] {associated plots $\geq$ M} (ten.south);
+	\path[black, thick, ->]	(ten.north)	edge	[bend left=45]	node [midway, xshift=-2cm] {unassociated plots} (init.west);
+	\draw[black, thick, ->]	(ten.120)	to [out=90,in=0] (-5,1.5) to [out=180,in=90] (-6,0) to [out=-90,in=180] (-5,-1.5) to [out=0,in=-90] node [midway, xshift=-3cm, yshift=2cm] {until N scans} (ten.240);
+	\draw[black, thick, ->]	(ten) -- (del) node [midway, yshift=0.5cm] {associated plots $<$ M};
+	
+\end{tikzpicture}

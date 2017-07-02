@@ -1,0 +1,69 @@
+\subsection{Definition}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{itemize}
+		\item {Track Initiation can start many false tracks.}
+		\item {Before tracks are sent outside of the tracker, they need to be confirmed.}
+		\item {The confirm process uses subsequent measurements to assess whether the track is real or false.}
+		\item {The confirmation criteria must balance:}
+		\begin{itemize}
+			\item {Confirming false tracks with low probability,}
+			\item {Rejecting real tracks with a low probability and}
+			\item {Doing this in a reasonable time.}
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\textbf{Track types:} According to their different life stages, tracks can be classified into 3 cases:
+	\vspace{1em}
+	\begin{itemize}
+		\item {\textbf{Tentative} (initiator): A track that is in the track initiation process.
+			This type cannot be sure that there is sufficient evidence that it is actually a target or not.}
+		\item {\textbf{Confirmed:} A track that was decided to belong to a valid target in the surveillance area. This is one end of initiation process.}
+		\item \textbf{Deleted:} At the other end of the initiation process, this is a track that is decided to come from all random false alarms or a target which can no longer be detected. All of its info should be deleted.
+	\end{itemize}
+\end{frame}
+\subsection{Track Confirmation Approaches}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{itemize}
+		\item {\textbf{M/N Logic}}
+		\begin{itemize}
+			\item {Makes a decision based on whether or not $M$ updates occur over the next $N$ opportunities.}
+		\end{itemize}
+		\item {\textbf{Sequential Probability Ratio Test (SPRT)}}
+		\begin{itemize}
+			\item {Evaluates a likelihood value based on the sequence of hits and misses.}
+			\item {Likelihood is compared to thresholds to make a decision.}
+			\item {the SPRT will take less time to provide the same performance as an equivalent M/N.}
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+\begin{frame}
+\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\textbf {M/N Logic}
+	\begin{itemize}
+		\item {$M/N$ is fixed length test.}
+		\item {If a track gets $M$ updated within the next $N$ opputunities, it is confirmed.}
+		\item {If $N$ update opportunities pass with fewer than $M$ updates, the track is dropped.}
+		\item {$M$ and $N$ are chosen to best meet design criteria.}
+	\end{itemize}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{figure}
+		\caption{\textbf{M/N Logic : Track Life Cycle Management}}
+		\scalebox{0.8}{\input{./tex/fig5-1}}
+	\end{figure}
+\end{frame}

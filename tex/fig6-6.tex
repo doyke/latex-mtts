@@ -1,0 +1,20 @@
+\begin{tikzpicture}[xscale=1,yscale=1,
+	oval/.style={ellipse, fill=green!50, opacity=0.75, rotate=45},
+	label/.style={text width=15mm, align=center},
+	node distance= 3cm and 1cm, >=stealth]
+		
+	%Nodes
+	\node[oval, minimum height=1.5cm, minimum width=3cm]	(area0)	at	(-1,0)	{};
+	\node[oval, minimum height=2cm, minimum width=4cm]	(area1)	at (4,0)	{};
+	\node[oval, minimum height=1cm, minimum width=2cm]	(area2)	at (4,-3)	{};
+	\node[oval, minimum height=1.25cm, minimum width=2.5cm]	(area3)	at (7.5,-3)	{};
+	\node[oval, minimum height=0.7cm, minimum width=1.4cm]	(area4)	at (7.5,-5.5)	{};
+	%\node[label, font=\scriptsize, text width=20mm]	(l3)	at	(5,3.1)	{True Trajectory};
+	
+	%Lines
+	\draw[black, thick, ->] (area0) -- node[label, above] {Prediction} (area1);
+	\draw[black, thick, ->] (area1) -- node[label, right] {Update} (area2);
+	\draw[black, thick, ->] (area2) -- node[label, above] {Prediction} (area3);
+	\draw[black, thick, ->] (area3) -- node[label, right] {Update} (area4);
+	\draw[black, thick, ->] (-3,-6.5) -- (9,-6.5) node[label, right] {Time};
+\end{tikzpicture}

@@ -1,0 +1,77 @@
+\subsection{Definition of Terms}
+\begin{frame}
+\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{itemize}
+		\item {\textbf{Tracking} is the processing of measurements obtained from a target in order to maintain an estimate of its current state.}
+		\item {\textbf{Measurements} are noise-corrupted	observations related to the state of a target.}
+		\item {The \textbf{state} is the set of measured and estimated target parameters.}
+		\item {A \textbf{track} is a state trajectory estimated from a set of measurements that are believed to be from the same target.}
+	\end{itemize}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	Multi Target Tracking aims to:
+	\begin{itemize}
+		\item {acquire all of data as it is produced by the sensor.}
+		\item {identify how many objects there are}
+		\item {obtain estimates of the state vectors (position, velocity, etc.) of each object.}
+	\end{itemize}
+\end{frame}
+\subsection{Multi Target Tracking Problems}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\textbf{Difficulties of Multi Target Tracking}
+	\vspace{1em}
+	\begin{itemize}
+		\item {A target's position is only observed (measured) at discrete points in time.}
+		\item {The measurements are noisy.}
+		\item {There are measurements that are not from any target.}
+		\item {The correct measurement is not always used.}
+		\item {The intent of the target is not known.}
+	\end{itemize}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{figure}
+		\caption{\textbf{Multi Target Tracking Problem -- Example}}
+		\includegraphics[scale=0.75]{./img/mtt-problems}
+	\end{figure}
+\end{frame}
+\subsection{Tracking Function}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-1em}
+	\begin{itemize}
+		\item {Correlation}
+		\item {Association}
+		\item {State Estimation}
+		\item {Track Initiation \& Management}
+	\end{itemize}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{figure}
+		\caption{\textbf{Functional Diagram -- Tracking System}}
+		\scalebox{1}{\input{./tex/fig2-3}}
+	\end{figure}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{figure}
+		\caption {\textbf{Tracking Process}}
+		\scalebox{1}{\input{./tex/fig2-2}}
+	\end{figure}
+\end{frame}

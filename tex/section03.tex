@@ -1,0 +1,71 @@
+\subsection{Definition}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{block}{Correlation}
+		Process of determining which measurement could feasibly originate from a track.
+	\end{block}
+	\begin{itemize}
+		\item {The correlation of a measurement to a track is statistically based, using the normalized statistical distance of the measurement from the track.}
+	\end{itemize}
+\end{frame}
+\subsection{Correlation Process}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{itemize}
+		\item {Gate are constructed around the predicted measurement for a track.}
+		\begin{itemize}
+			\item {If a measurement falls \textbf{inside} the gate, it becomes a candidate for association to the track.}
+			\item {If a measurement falls \textbf{outside} the gate, it is not considered for association to the track.}
+		\end{itemize}
+		\item{Windows must take into account:}
+		\begin{itemize}
+			\item {Uncertainty in prediction.}
+			\item {Uncertainty in new measurement.}
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+\subsection{Gating Options}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{block}{Rectangular gating}
+		\begin{align*}
+			|y_k-\hat{y}_{k|k-1}| \gtrless \kappa  \sigma_{k|k-1}
+		\end{align*}
+		where $k$ is generally $ \geqslant$ 3
+	\end{block}
+	\begin{block}{Ellipsoidal gating}
+		\begin{align*}
+		(y_{k} - \hat{y}_{k|k-1})^{T}S^{-1}_{k|k-1}(y_{k}-\hat{y}_{k|k-1}) \gtrless  \gamma_{G}
+		\end{align*}
+		where $\gamma_{G}$ is the gate threshold.
+	\end{block}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{figure}
+		\caption{\textbf{Illustration of Ellipsoidal gating}}
+		\includegraphics[scale=0.25]{./img/ellipsoidal}
+	\end{figure}
+	\vspace{-1em}
+	$\hat{y}^i_{k|k-1}$ : Predicted measurement position for $i$th target\\
+	$y^i_k$ \ \ \ \ \ : the $j$th measurement
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\begin{block}{Ellipsoidal vs Rectangular Gating}
+		\begin{itemize}
+			\item {Rectangular gating is simpler to implement than ellipsoidal gating.}
+			\item {Rectangular gating requires less computations than ellipsoidal gating.}
+			\item {The ellipsoidal gate requires smaller area than the rectangular gate.}
+		\end{itemize}
+	\end{block}
+\end{frame}

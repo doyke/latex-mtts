@@ -1,0 +1,54 @@
+\begin{tikzpicture}[xscale=1,yscale=1,
+	square/.style={rectangle, minimum height=22mm, draw=black, align=center},
+	label/.style={text width=5mm},
+	node distance= 3cm and 1cm, >=stealth]
+	
+	%Nodes
+	\node[square]	(apriori)	at (0,0)	{
+		\textbf{A priori input:}\\ \\
+		$\hat{\mathbf{X}}_{k-1|k-1}=\mathbf{X}_0$\\
+		$\mathbf{P}_{k-1|k-1}=\mathbf{P}_0$
+	};
+	\node[square, minimum height=10mm]	(init)	[right of=apriori]	{
+		$k=1$
+	};
+	\node[square, xshift=2cm]	(prediction)	[right of=init]	{
+		\textbf{Prediction:}\\ \\
+		$\hat{\mathbf{X}}_{k|k-1}= \mathbf{F}_{k|k-1} \hat{\mathbf{X}}_{k-1|k-1}$\\
+		$\mathbf{P}_{k|k-1}= \mathbf{F}_{k|k-1} \mathbf{P}_{k-1|k-1} \mathbf{F}^\intercal_{k|k-1} + \mathbf{Q}_{k|k-1}$
+	};
+
+	\node[square, xshift=3cm]	(residual)	[right of=prediction]	{
+		\textbf{Residual computation:}\\ \\
+		$\mathbf{\nu}_k = \mathbf{Z}_k - \mathbf{H} \hat{\mathbf{X}}_{k|k-1}$\\
+		$\mathbf{S}_k = \mathbf{HP}_{k|k-1}\mathbf{H}^\intercal - \mathbf{R}_k$
+	};
+
+	\node[square]	(gain)	[below of=residual]	{
+		\textbf{Gain computation:}\\ \\
+		$\hat{\mathbf{X}}_{k|k} = \hat{\mathbf{X}}_{k|k-1} + \mathbf{K}_k \mathbf{\nu}_k$\\
+		$\mathbf{K}_k = \mathbf{P}_{k|k-1} \mathbf{H}^\intercal \mathbf{S}^{-1}_k$
+	};
+
+	\node[square]	(filter)	[below of=gain]	{
+		\textbf{Filter Update:}\\ \\
+		$\hat{\mathbf{X}}_{k|k} = \hat{\mathbf{X}}_{k|k-1} + \mathbf{K}_k \mathbf{\nu}_k$\\
+		$\mathbf{P}_{k|k} = (\mathbf{I} - \mathbf{K}_k \mathbf{H}) \mathbf{P}_{k|k-1}$
+	};
+	\node[square, xshift=-4cm, minimum height=10mm]	(increment)	[left of=filter]	{$k=k+1$};
+	
+	\node[label, xshift=-1.8cm]	(zk)	[above left of=prediction]	{$\mathbf{Z}_k$};
+	
+	%Lines
+	\draw[black, thick, ->] (apriori) -- (init);
+	%\draw[black, thick, ->] (init.20) -- ++(0.9,0);
+	\draw[black, thick, ->] (zk) |- (prediction.170);
+	\draw[black, thick, ->] (init) -- (prediction);
+	\draw[black, thick, ->] (prediction) -- (residual);
+	\draw[black, thick, ->] (residual) -- (gain);
+	\draw[black, thick, ->] (gain) -- (filter);
+	%\draw[black, thick, ->] (filter.170) -| (prediction);
+	%\draw[balck, thick, ->]	(filter.190) -- ()
+	\draw[black, thick, ->]	(filter) -- (increment);
+	\draw[black, thick, ->] (increment) -- ++(-3,0) |- (prediction.190);
+\end{tikzpicture}

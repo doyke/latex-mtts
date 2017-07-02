@@ -1,0 +1,188 @@
+\subsection{Measurement}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{block}{Definition}
+		The term \textbf{measurement} contains all observed quantities included in a (possibly processed) report output from a sensor.
+	\end{block}
+\end{frame}
+\begin{frame}
+\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\begin{itemize}
+		\item {Generic model of measurement}
+		\begin{align*}
+			y_{k} = h(x_{k}) + e_{k}
+		\end{align*}
+		\item {Example models}
+		\begin{itemize}
+			\item {Simple cartesian}
+			\begin{align*}
+				y_{k} =[x_{k} \ y_{k} ]^{T} + e_{k}
+			\end{align*}
+			\item {Range}
+			\begin{align*}
+				y_{k} =\sqrt{(x_k)^{2} + (y_k)^{2}} + e_k
+			\end{align*}
+			\item {Bearing only}
+			\begin{align*}
+				y_{k} = \arctan2(y_k,x_k)+ e_k
+			\end{align*}
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+\subsection{Tracks}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{block}{Definition}
+		A \textbf{track} is a sequence of measurements that has been decided or hypothesized by the tracker to come from a single source.
+	\end{block}
+	\begin{itemize}
+		\item {Usually, instead of the list of actual measurements, sufficient statistics is held e.g., mean and covariance in the case of a KF, particles in the case of a PF.}
+		\item {Generally each arriving measurement must start a track. Hence tracks must be classified and must not be treated equally.}
+	\end{itemize}
+	\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\textbf{Track types:} According to their different life stages, tracks can be classified into 3 cases:
+	\vspace{1em}
+	\begin{itemize}
+		\item {\textbf{Tentative} (initiator): A track that is in the track initiation process.
+		This type cannot be sure that there is sufficient evidence that it is actually a target or not.}
+		\item {\textbf{Confirmed:} A track that was decided to belong to a valid target in the surveillance area. This is one end of initiation process.}
+		\item \textbf{Deleted:} At the other end of the initiation process, this is a track that is decided to come from all random false alarms or a target which can no longer be detected. All of its info should be deleted.
+	\end{itemize}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\begin{itemize}
+		\item {General state space model:}
+		\begin{align*}
+			x_{k}= f(x_{k-1})+w_{k}
+		\end{align*}
+		\item {Example models}
+		\begin{itemize}
+			\item {Constant Velocity}
+			\begin{align*}
+				x_{k}\triangleq
+				\begin{bmatrix}
+					x_k\\v^{x}_k
+				\end{bmatrix} =
+				\begin{bmatrix}
+					1&T\\0&1
+				\end{bmatrix}  
+				\begin{bmatrix}
+					x_{k-1}\\v^{x}_{k-1}
+				\end{bmatrix} + 
+				\begin{bmatrix}
+					{T^{2}}/2\\T
+				\end{bmatrix} a_k
+			\end{align*}
+			where $a_{k} \sim N(0, \sigma^{2}_{a})$ is a white noise.
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{itemize}
+		\item {Constant Velocity}
+		\begin{align*}
+			x_{k}\triangleq
+			\begin{bmatrix}
+				x_k\\v^{x}_k\\a^{x}_k
+			\end{bmatrix} = 
+			\begin{bmatrix}
+				1&T&{T^2}/2 \\ 0&1&T \\ 0&0&1
+			\end{bmatrix}
+			\begin{bmatrix}
+				x_{k-1}\\v^{x}_{k-1}\\a^{x}_{k-1}
+			\end{bmatrix} + 
+			\begin{bmatrix}
+				{T^{2}}/{2} \\ T \\ 1
+			\end{bmatrix}  \eta_{k}
+		\end{align*}
+		where $\eta _{k} \sim N(0, \sigma ^{2}_{ \eta })$ is a white noise.
+	\end{itemize}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-1em}
+	\begin{itemize}
+		\item {Coordinate Turn}
+		\begin{align*}
+			x_{k} &\triangleq
+			\begin{bmatrix}
+				x_k & y_k & v^{x}_k & v^{y}_k & \omega_k
+			\end{bmatrix}^T \\
+			&=
+			\begin{bmatrix}
+				1 & 0 &\cfrac{\sin(\omega_{k-1}T)}{\omega_{k-1}} & -\cfrac{1-\cos(\omega_{k-1}T) }{\omega_{k-1})} & 0 \\
+				0 & 1 & \cfrac{1- \cos(\omega _{k-1}T) }{\omega_{k-1}} & \cfrac{\sin(\omega_{k-1}T) }{\omega_{k-1}} & 0 \\
+				0 & 0 & \cos(\omega_{k-1}T) & -\sin(\omega_{k-1}T) & 0 \\
+				0 & 0 & \sin(\omega_{k-1}T) & \cos(\omega_{k-1}T) & 0 \\
+				0 & 0 & 0 & 0 & 1
+			\end{bmatrix} x_{k-1}\\
+			&\ \ +
+			\begin{bmatrix}
+				{T^{2}}/2 & 0 & 0 \\
+				0 & {T^{2}}/2 & 0 \\
+				T & 0 & 0 \\
+				0 & T & 0 \\
+				0 & 0 & 1
+			\end{bmatrix} \eta _{k}
+		\end{align*}
+	\end{itemize}
+\end{frame}
+\subsection{Filtering}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-1em}
+	When measurements corresponding to a target are obtained, the
+	calculation of the sufficient statistics is done via state estimators (filters).
+	\begin{itemize}
+		\item {Early tracking systems: very low computational capacity => Steady state Kalman filters: $\alpha-\beta$ and $\alpha-\beta-\gamma$ filters. Kept an integer quality indicator instead of covariance.}
+		\item {\textbf{Kalman filters} (KFs) and \textbf{Extended KFs} (EKF) are the most common approaches.}
+		\item {\textbf{Unscented KF} (UKF) and other sigma-point approaches got much criticism (and undermining) from conservative" people in the field when they were first introduced. \textbf{Particle filters} (PFs) were despised.}
+		\item {With the ever increasing computational resources, they are now commonly accepted as valid methods for target tracking.}
+	\end{itemize}
+\end{frame}
+\subsection{Tracking Function}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-1em}
+	\begin{itemize}
+		\item {Correlation}
+		\item {Association}
+		\item {State Estimation}
+		\item {Track Initiation \& Management}
+	\end{itemize}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{figure}
+		\caption{\textbf{Functional Diagram -- Tracking System}}
+		\scalebox{1}{\input{./tex/fig2-3}}
+	\end{figure}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\vspace{-2em}
+	\begin{figure}
+		\caption {\textbf{Tracking Process}}
+		\scalebox{1}{\input{./tex/fig2-2}}
+	\end{figure}
+\end{frame}
