@@ -1,16 +1,41 @@
 \subsection{Definition}
 \begin{frame}
 	\frametitle\insertsection
+	\framesubtitle\empty
+	\begin{center}
+		\Large \textbf{\insertsubsection}
+	\end{center}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
 	\framesubtitle\insertsubsection
 	\vspace{-2em}
 	\begin{block}{Correlation}
 		Process of determining which measurement could feasibly originate from a track.
 	\end{block}
+	\begin{figure}
+		\includegraphics[scale=0.3333]{./img/data_correlation}
+	\end{figure}
 	\begin{itemize}
 		\item {The correlation of a measurement to a track is statistically based, using the normalized statistical distance of the measurement from the track.}
 	\end{itemize}
 \end{frame}
 \subsection{Correlation Process}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\empty
+	\begin{center}
+		\Large \textbf{\insertsubsection}
+	\end{center}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\insertsubsection
+	\begin{figure}
+		\caption{\textbf{Context of Data Correlation}}
+		\scalebox{1}{\input{./tex/fig3-1}}
+	\end{figure}
+\end{frame}
 \begin{frame}
 	\frametitle\insertsection
 	\framesubtitle\insertsubsection
@@ -28,18 +53,27 @@
 		\end{itemize}
 	\end{itemize}
 \end{frame}
-\subsection{Gating Options}
+\subsection{Gating Computation}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\empty
+	\begin{center}
+		\Large \textbf{\insertsubsection}
+	\end{center}
+\end{frame}
 \begin{frame}
 	\frametitle\insertsection
 	\framesubtitle\insertsubsection
 	\vspace{-2em}
 	\begin{block}{Rectangular gating}
+		\vspace{-1em}
 		\begin{align*}
 			|y_k-\hat{y}_{k|k-1}| \gtrless \kappa  \sigma_{k|k-1}
 		\end{align*}
-		where $k$ is generally $ \geqslant$ 3
+		where $\kappa$ is generally $ \geqslant$ 3
 	\end{block}
 	\begin{block}{Ellipsoidal gating}
+		\vspace{-1em}
 		\begin{align*}
 		(y_{k} - \hat{y}_{k|k-1})^{T}S^{-1}_{k|k-1}(y_{k}-\hat{y}_{k|k-1}) \gtrless  \gamma_{G}
 		\end{align*}

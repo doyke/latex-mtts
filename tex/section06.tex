@@ -1,5 +1,12 @@
 \subsection{Why Filtering ?}
-	\begin{frame}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\empty
+	\begin{center}
+		\Large \textbf{\insertsubsection}
+	\end{center}
+\end{frame}
+\begin{frame}
 	\frametitle\insertsection
 	\framesubtitle\insertsubsection
 	\vspace{-2em}
@@ -10,6 +17,13 @@
 	\end{itemize}
 \end{frame}
 \subsection{Models \& Problems}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\empty
+	\begin{center}
+		\Large \textbf{\insertsubsection}
+	\end{center}
+\end{frame}
 \begin{frame}
 	\frametitle\insertsection
 	\framesubtitle\insertsubsection
@@ -163,6 +177,13 @@
 \subsection{Kalman Filtering}
 \begin{frame}
 	\frametitle\insertsection
+	\framesubtitle\empty
+	\begin{center}
+		\Large \textbf{\insertsubsection}
+	\end{center}
+\end{frame}
+\begin{frame}
+	\frametitle\insertsection
 	\framesubtitle\insertsubsection
 	\begin{block} {Kalman Filter}
 		\begin{itemize}
@@ -172,172 +193,190 @@
 		\end{itemize}
 	\end{block}
 \end{frame}
+%\begin{frame}
+%	\frametitle\insertsection
+%	\framesubtitle\insertsubsection
+%	\begin{block}{Process Noise}
+%		\begin{itemize}
+%			\item {Process noise $\mathbf{Q}_k$ is how a target deviate its position from assumed motion model.}
+%			\item {Example of CV white noise model:}
+%			\begin{align*}
+%				\mathbf{Q}_k = \sigma^2_a
+%				\begin{bmatrix}
+%					\dfrac{\Delta t^4}{4} & \dfrac{\Delta t^3}{2} \\
+%					\dfrac{\Delta t^3}{2} & \Delta t^2 \\
+%				\end{bmatrix}
+%			\end{align*}
+%		\end{itemize}
+%	\end{block}
+%\end{frame}
 \begin{frame}
 	\frametitle\insertsection
 	\framesubtitle\insertsubsection
-	\begin{block}{Track State Prediction}
-		\begin{itemize}
-			\item {Using the state vector and state transition matrix, the equation for predicting the state can be written as:}
-			\begin{align*}
-				\hat{\mathbf{X}}_{k|k-1}= \mathbf{F}_{k|k-1} \hat{\mathbf{X}}_{k-1|k-1}
-			\end{align*}
-		\end{itemize}
+	\vspace{-1.5em}
+	\begin{block} {Kalman Filtering Parameters}
+		\begin{table}\small
+			\begin{tabular}{p{4cm}c}
+				Predicted State Estimate: & $\hat{\mathbf{X}}_{k|k-1}= \mathbf{F}_{k|k-1} \hat{\mathbf{X}}_{k-1|k-1}$ \\ \\
+				Predicted Covariance: & $\mathbf{P}_{k|k-1}= \mathbf{F}_{k|k-1} \mathbf{P}_{k-1|k-1} \mathbf{F}^\intercal_{k|k-1} + \mathbf{Q}_{k|k-1}$ \\ \\
+				Residual (Innovation): & $\mathbf{\nu}_k = \mathbf{Z}_k - \hat{\mathbf{Z}}_{k|k-1} = \mathbf{Z}_k - \mathbf{H} \hat{\mathbf{X}}_{k|k-1}$ \\ \\
+				Residual Covariance: & $\mathbf{S}_k = \mathbf{HP}_{k|k-1}\mathbf{H}^\intercal - \mathbf{R}_k$ \\ \\
+				Kalman Gain: & $\mathbf{K}_k = \mathbf{P}_{k|k-1} \mathbf{H}^\intercal \mathbf{S}^{-1}_k$ \\ \\
+				Track State Estimate: & $\hat{\mathbf{X}}_{k|k} = \hat{\mathbf{X}}_{k|k-1} + \mathbf{K}_k \mathbf{\nu}_k$ \\ \\
+				Covariance: & $\mathbf{P}_{k|k} = (\mathbf{I} - \mathbf{K}_k \mathbf{H}) \mathbf{P}_{k|k-1} (\mathbf{I} - \mathbf{K}_k \mathbf{H})^\intercal + \mathbf{K}_k\mathbf{R}_k\mathbf{K}^\intercal_k$
+			\end{tabular}
+		\end{table}
 	\end{block}
 \end{frame}
-\begin{frame}
-	\frametitle\insertsection
-	\framesubtitle\insertsubsection
-	\vspace{-1em}
-	\begin{block}{Track Covariance Matrix}
-		\begin{itemize}
-			\item {A matrix $\mathbf{P}_k$ containing all of the variance quantities related to all elements of the state.}
-			\item {The diagonal elements are the variances of the members of the state vector.}
-			\item {The off-diagonal elements are the covariance between any two state vector members.}
-			\begin{align*}
-				\mathbf{P}_k =
-				\begin{bmatrix}
-					{\sigma_x}^2 & \sigma_{xy} & \sigma_{xz} \\
-					\sigma_{yx} & {\sigma_y}^2 & \sigma_{yz} \\
-					\sigma_{zx} & \sigma_{zy} & {\sigma_z}^2 \\
-				\end{bmatrix}
-			\end{align*}
-		\end{itemize}
-	\end{block}
-\end{frame}
-\begin{frame}
-	\frametitle\insertsection
-	\framesubtitle\insertsubsection
-	\begin{block}{Process Noise}
-		\begin{itemize}
-			\item {Process noise $\mathbf{Q}_k$ is how a target deviate its position from assumed motion model.}
-			\item {Example of CV white noise model:}
-			\begin{align*}
-				\mathbf{Q}_k = \sigma^2_a
-				\begin{bmatrix}
-					\dfrac{\Delta t^4}{4} & \dfrac{\Delta t^3}{2} \\
-					\dfrac{\Delta t^3}{2} & \Delta t^2 \\
-				\end{bmatrix}
-			\end{align*}
-		\end{itemize}
-	\end{block}
-\end{frame}
-\begin{frame}
-	\frametitle\insertsection
-	\framesubtitle\insertsubsection
-	\begin{block}{Track Covariance Prediction}
-		\begin{itemize}
-			\item {The covariance matrix is predicted using state transition matrix.}
-			\item {Process noise is included in the prediction of the covariance matrix.}
-			\item {Process noise is included in the prediction of the covariance matrix.}
-			\begin{align*}
-				\mathbf{P}_{k|k-1}= \mathbf{F}_{k|k-1} \mathbf{P}_{k-1|k-1} \mathbf{F}^\intercal_{k|k-1} + \mathbf{Q}_{k|k-1}
-			\end{align*}
-		\end{itemize}
-	\end{block}
-\end{frame}
-\begin{frame}
-	\frametitle\insertsection
-	\framesubtitle\insertsubsection
-	\vspace{-1em}
-	\begin{block}{Measurement Vector}
-		\begin{itemize}
-			\item {The vector $\mathbf{Z}_k$ is a column vector containing the new measurement from an example:}
-			\begin{align*}
-				\mathbf{Z}_k =
-				\begin{bmatrix}
-					x_k & y_k & z_k
-				\end{bmatrix}^\intercal
-			\end{align*}
-		\end{itemize}
-	\end{block}
-	\begin{block}{Measurement Covariance Matrix}
-		\begin{itemize}
-			\item {The matrix $\mathbf{R}_k$ contains the variances of measured quantities and covariances if required.}
-			\begin{align*}
-				\mathbf{R}_k =
-				\begin{bmatrix}
-					\sigma^2_x & 0 & 0 \\
-					0 & \sigma^2_y & 0 \\
-					0 & 0 & \sigma^2_z
-				\end{bmatrix}
-			\end{align*}
-		\end{itemize}
-	\end{block}
-\end{frame}
-\begin{frame}
-	\frametitle\insertsection
-	\framesubtitle\insertsubsection
-	\vspace{-1em}
-	\begin{block}{Observation Matrix}
-		\begin{itemize}
-			\item {The state vector and the covariance matrix include all of the state quantities.}
-			\item {The observation matrix $\mathbf{H}$ enables the parts of these related to the measures quantities to be extracted from all elements.}
-		\end{itemize}
-	\end{block}
-	\begin{block}{Predicted Measurement Vector}
-		\begin{itemize}
-			\item {With the observation matrix $\mathbf{H}$ and the predicted state vector $\mathbf{X}_{k|k-1}$, predicted measurement vector $\mathbf{Z}_k$ can be determined:}
-			\begin{align*}
-				\hat{\mathbf{Z}}_{k|k-1} = \mathbf{H} \hat{\mathbf{X}}_{k|k-1}
-			\end{align*}
-		\end{itemize}
-	\end{block}
-\end{frame}
-\begin{frame}
-	\frametitle\insertsection
-	\framesubtitle\insertsubsection
-	\vspace{-1em}
-	\begin{block}{Residual (Innovation) Vector}
-		\begin{itemize}
-			\item {The residual $\mathbf{\nu}_k$ is the difference between the measurement and the predicted measurement:}
-			\begin{align*}
-				\mathbf{\nu}_k = \mathbf{Z}_k - \hat{\mathbf{Z}}_{k|k-1} = \mathbf{Z}_k - \mathbf{H} \hat{\mathbf{X}}_{k|k-1}
-			\end{align*}
-		\end{itemize}
-	\end{block}
-	\begin{block}{Residual (Innovation) Covariance Matrix}
-		\begin{itemize}
-			\item {The covariance matrix $\mathbf{S}_k$ is expressed in terms of the predicted track covariance matrix related to the measured quantities with the measurement covariance matrix:}
-			\begin{align*}
-				\mathbf{S}_k = \mathbf{HP}_{k|k-1}\mathbf{H}^\intercal - \mathbf{R}_k
-			\end{align*}
-		\end{itemize}
-	\end{block}
-\end{frame}
-\begin{frame}
-	\frametitle\insertsection
-	\framesubtitle\insertsubsection
-	\vspace{-1em}
-	\begin{block}{Gain Matrix}
-		\begin{itemize}
-			\item {The gain matrix $\mathbf{K}_k$ determines the relative weight given to the predicted and the new measurement to update the state.}
-			\begin{align*}
-				\mathbf{K}_k = \mathbf{P}_{k|k-1} \mathbf{H}^\intercal \mathbf{S}^{-1}_k
-			\end{align*}
-		\end{itemize}
-	\end{block}
-	\begin{block}{Track State Vector Update}
-		\begin{itemize}
-			\item {The predicted state can then be updated to obtain a new track estimated.}
-			\begin{align*}
-				\hat{\mathbf{X}}_{k|k} = \hat{\mathbf{X}}_{k|k-1} + \mathbf{K}_k \mathbf{\nu}_k
-			\end{align*}
-		\end{itemize}
-	\end{block}
-\end{frame}
-\begin{frame}
-	\frametitle\insertsection
-	\framesubtitle\insertsubsection
-	\vspace{-1em}
-	\begin{block}{Track Covariance Matrix Update}
-		\begin{itemize}
-			\item {The predicted covariance is also updated to updated to obtain the covariance of the new state estimate.}
-			\begin{align*}
-				\mathbf{P}_{k|k} = (\mathbf{I} - \mathbf{K}_k \mathbf{H}) \mathbf{P}_{k|k-1} (\mathbf{I} - \mathbf{K}_k \mathbf{H})^\intercal + \mathbf{K}_k\mathbf{R}_k\mathbf{K}^\intercal_k
-			\end{align*}
-		\end{itemize}
-	\end{block}
-\end{frame}
+%\begin{frame}
+%	\frametitle\insertsection
+%	\framesubtitle\insertsubsection
+%	\begin{block}{Track State Prediction}
+%		\begin{itemize}
+%			\item {Using the state vector and state transition matrix, the equation for predicting the state can be written as:}
+%			\begin{align*}
+%				\hat{\mathbf{X}}_{k|k-1}= \mathbf{F}_{k|k-1} \hat{\mathbf{X}}_{k-1|k-1}
+%			\end{align*}
+%		\end{itemize}
+%	\end{block}
+%\end{frame}
+%\begin{frame}
+%	\frametitle\insertsection
+%	\framesubtitle\insertsubsection
+%	\vspace{-1em}
+%	\begin{block}{Track Covariance Matrix}
+%		\begin{itemize}
+%			\item {A matrix $\mathbf{P}_k$ containing all of the variance quantities related to all elements of the state.}
+%			\item {The diagonal elements are the variances of the members of the state vector.}
+%			\item {The off-diagonal elements are the covariance between any two state vector members.}
+%			\begin{align*}
+%				\mathbf{P}_k =
+%				\begin{bmatrix}
+%					{\sigma_x}^2 & \sigma_{xy} & \sigma_{xz} \\
+%					\sigma_{yx} & {\sigma_y}^2 & \sigma_{yz} \\
+%					\sigma_{zx} & \sigma_{zy} & {\sigma_z}^2 \\
+%				\end{bmatrix}
+%			\end{align*}
+%		\end{itemize}
+%	\end{block}
+%\end{frame}
+%\begin{frame}
+%	\frametitle\insertsection
+%	\framesubtitle\insertsubsection
+%	\begin{block}{Track Covariance Prediction}
+%		\begin{itemize}
+%			\item {The covariance matrix is predicted using state transition matrix.}
+%			\item {Process noise is included in the prediction of the covariance matrix.}
+%			\item {Process noise is included in the prediction of the covariance matrix.}
+%			\begin{align*}
+%				\mathbf{P}_{k|k-1}= \mathbf{F}_{k|k-1} \mathbf{P}_{k-1|k-1} \mathbf{F}^\intercal_{k|k-1} + \mathbf{Q}_{k|k-1}
+%			\end{align*}
+%		\end{itemize}
+%	\end{block}
+%\end{frame}
+%\begin{frame}
+%	\frametitle\insertsection
+%	\framesubtitle\insertsubsection
+%	\vspace{-1em}
+%	\begin{block}{Measurement Vector}
+%		\begin{itemize}
+%			\item {The vector $\mathbf{Z}_k$ is a column vector containing the new measurement from an example:}
+%			\begin{align*}
+%				\mathbf{Z}_k =
+%				\begin{bmatrix}
+%					x_k & y_k & z_k
+%				\end{bmatrix}^\intercal
+%			\end{align*}
+%		\end{itemize}
+%	\end{block}
+%	\begin{block}{Measurement Covariance Matrix}
+%		\begin{itemize}
+%			\item {The matrix $\mathbf{R}_k$ contains the variances of measured quantities and covariances if required.}
+%			\begin{align*}
+%				\mathbf{R}_k =
+%				\begin{bmatrix}
+%					\sigma^2_x & 0 & 0 \\
+%					0 & \sigma^2_y & 0 \\
+%					0 & 0 & \sigma^2_z
+%				\end{bmatrix}
+%			\end{align*}
+%		\end{itemize}
+%	\end{block}
+%\end{frame}
+%\begin{frame}
+%	\frametitle\insertsection
+%	\framesubtitle\insertsubsection
+%	\vspace{-1em}
+%	\begin{block}{Observation Matrix}
+%		\begin{itemize}
+%			\item {The state vector and the covariance matrix include all of the state quantities.}
+%			\item {The observation matrix $\mathbf{H}$ enables the parts of these related to the measures quantities to be extracted from all elements.}
+%		\end{itemize}
+%	\end{block}
+%	\begin{block}{Predicted Measurement Vector}
+%		\begin{itemize}
+%			\item {With the observation matrix $\mathbf{H}$ and the predicted state vector $\mathbf{X}_{k|k-1}$, predicted measurement vector $\mathbf{Z}_k$ can be determined:}
+%			\begin{align*}
+%				\hat{\mathbf{Z}}_{k|k-1} = \mathbf{H} \hat{\mathbf{X}}_{k|k-1}
+%			\end{align*}
+%		\end{itemize}
+%	\end{block}
+%\end{frame}
+%\begin{frame}
+%	\frametitle\insertsection
+%	\framesubtitle\insertsubsection
+%	\vspace{-1em}
+%	\begin{block}{Residual (Innovation) Vector}
+%		\begin{itemize}
+%			\item {The residual $\mathbf{\nu}_k$ is the difference between the measurement and the predicted measurement:}
+%			\begin{align*}
+%				\mathbf{\nu}_k = \mathbf{Z}_k - \hat{\mathbf{Z}}_{k|k-1} = \mathbf{Z}_k - \mathbf{H} \hat{\mathbf{X}}_{k|k-1}
+%			\end{align*}
+%		\end{itemize}
+%	\end{block}
+%	\begin{block}{Residual (Innovation) Covariance Matrix}
+%		\begin{itemize}
+%			\item {The covariance matrix $\mathbf{S}_k$ is expressed in terms of the predicted track covariance matrix related to the measured quantities with the measurement covariance matrix:}
+%			\begin{align*}
+%				\mathbf{S}_k = \mathbf{HP}_{k|k-1}\mathbf{H}^\intercal - \mathbf{R}_k
+%			\end{align*}
+%		\end{itemize}
+%	\end{block}
+%\end{frame}
+%\begin{frame}
+%	\frametitle\insertsection
+%	\framesubtitle\insertsubsection
+%	\vspace{-1em}
+%	\begin{block}{Gain Matrix}
+%		\begin{itemize}
+%			\item {The gain matrix $\mathbf{K}_k$ determines the relative weight given to the predicted and the new measurement to update the state.}
+%			\begin{align*}
+%				\mathbf{K}_k = \mathbf{P}_{k|k-1} \mathbf{H}^\intercal \mathbf{S}^{-1}_k
+%			\end{align*}
+%		\end{itemize}
+%	\end{block}
+%	\begin{block}{Track State Vector Update}
+%		\begin{itemize}
+%			\item {The predicted state can then be updated to obtain a new track estimated.}
+%			\begin{align*}
+%				\hat{\mathbf{X}}_{k|k} = \hat{\mathbf{X}}_{k|k-1} + \mathbf{K}_k \mathbf{\nu}_k
+%			\end{align*}
+%		\end{itemize}
+%	\end{block}
+%\end{frame}
+%\begin{frame}
+%	\frametitle\insertsection
+%	\framesubtitle\insertsubsection
+%	\vspace{-1em}
+%	\begin{block}{Track Covariance Matrix Update}
+%		\begin{itemize}
+%			\item {The predicted covariance is also updated to updated to obtain the covariance of the new state estimate.}
+%			\begin{align*}
+%				\mathbf{P}_{k|k} = (\mathbf{I} - \mathbf{K}_k \mathbf{H}) \mathbf{P}_{k|k-1} (\mathbf{I} - \mathbf{K}_k \mathbf{H})^\intercal + \mathbf{K}_k\mathbf{R}_k\mathbf{K}^\intercal_k
+%			\end{align*}
+%		\end{itemize}
+%	\end{block}
+%\end{frame}
 \begin{frame}
 	\frametitle\insertsection
 	\framesubtitle\insertsubsection
@@ -442,6 +481,13 @@
 	\end{block}
 \end{frame}
 \subsection{Adaptive Filtering}
+\begin{frame}
+	\frametitle\insertsection
+	\framesubtitle\empty
+	\begin{center}
+		\Large \textbf{\insertsubsection}
+	\end{center}
+\end{frame}
 \begin{frame}
 	\frametitle\insertsection
 	\framesubtitle\insertsubsection
@@ -561,11 +607,11 @@
 	\frametitle\insertsection
 	\framesubtitle\insertsubsection
 	\vspace{-2em}
-	\begin{block}{IMM Dessign}
+	\begin{block}{IMM Design}
 		\begin{itemize}
 			\item {Model Set Design -- Most important}
 			\begin{itemize}
-				\item {Most designs are ad hoc.}
+				\item {Most designs are ad-hoc.}
 				\item {Need enough models.}
 				\item {Models must be different enough so that their performance differences are "identifiable" or "observable".}
 			\end{itemize}
@@ -577,3 +623,46 @@
 		\end{itemize}
 	\end{block}
 \end{frame}
+%\subsection{A General State Estimation Framework}
+%\begin{frame}
+%	\frametitle\insertsection
+%	\framesubtitle\empty
+%	\begin{center}
+%		\Large \textbf{\insertsubsection}
+%	\end{center}
+%\end{frame}
+%\begin{frame}
+%	\frametitle\insertsection
+%	\framesubtitle\insertsubsection
+%	\vspace{-2em}
+%	\begin{block}{MATLAB}
+%		\begin{itemize}
+%			\item {Easy to use}
+%			\item {Weak type}
+%			\item {Slow processing}
+%		\end{itemize}
+%	\end{block}
+%	\begin{block}{Object Oriented Languages}
+%		\begin{itemize}
+%			\item {Fast}
+%			\item {Object oriented}
+%			\item {Can be implemented.}
+%		\end{itemize}
+%	\end{block}
+%\end{frame}
+%\begin{frame}
+%	\frametitle\insertsection
+%	\framesubtitle\insertsubsection
+%	\begin{table}
+%		\caption{\textbf{Classes and their implementations}}
+%		\begin{tabular}{|c|c|c|c|} \hline
+%			\rowcolor{aerolightblue}
+%			\textbf{Model} & \textbf{Noise} & \textbf{Estimator} & \textbf{IO} \\ \hline
+%			LinearModel & Gaussian & Kalman Filter & ASTERIX \\ \hline
+%			MultiModel & & Extended Kalman Filter & XML \\ \hline
+%			GenericModel & & Unscented Kalman Filter & \\ \hline
+%			 & & IMM Filter & \\ \hline
+%			 & & Particle Filter & \\ \hline
+%		\end{tabular}
+%	\end{table}
+%\end{frame}
