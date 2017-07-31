@@ -221,3 +221,6 @@ TSWLatexianTemp*
 
 # xwatermark
 *.xwm
+
+# txs tex
+*.tex~txs0
